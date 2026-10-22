@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.Python
+.venv/
+venv/
+env/
+
+# Databases
+*.db
+*.sqlite3
+
+# Uploaded resumes
+uploaded_resumes/
+backend/uploaded_resumes/
+
+# Env files
+.env
+
+# Streamlit
+.streamlit/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/

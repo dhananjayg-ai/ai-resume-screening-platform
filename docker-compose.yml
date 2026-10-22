@@ -1,0 +1,44 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    image: ai-resume-screening-backend:latest
+    container_name: ai-resume-screening-backend
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: sqlite:////data/resume_screening.db
+      UPLOAD_DIR: /data/uploaded_resumes
+      CORS_ORIGINS: "*"
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_FROM: ${SMTP_FROM:-}
+      SMTP_USE_SSL: ${SMTP_USE_SSL:-false}
+    volumes:
+      - resume_data:/data
+    networks:
+      - resume-screening-net
+
+  frontend:
+    build:
+      context: ./frontend
+    image: ai-resume-screening-frontend:latest
+    container_name: ai-resume-screening-frontend
+    ports:
+      - "8501:8501"
+    environment:
+      API_BASE_URL: http://backend:8000
+    depends_on:
+      - backend
+    networks:
+      - resume-screening-net
+
+networks:
+  resume-screening-net:
+    driver: bridge
+
+volumes:
+  resume_data:
+    driver: local
